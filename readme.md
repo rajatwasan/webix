@@ -21,6 +21,6 @@ Permanent storage is not important, the best option would be if you store all da
 
 # Installation Instructions
 
-Run npm install or yarn install
-Run npm start or yarn start
+Run **npm install** or **yarn install**
+Run **npm start** or **yarn start**
 Open http://localhost:3000
