@@ -7,7 +7,7 @@
 	var list = {
 		view: "list", id: "rolelist",
 		autoheight: true, select: true,
-		template: "#name#",
+		template: "#value#",
 		on: {
 			onAfterSelect: function (id) {
 				$$("roleform").load("/role/" + id);
@@ -15,7 +15,6 @@
 		},
 		url: "/role"
 	};
-
 	var form = {
 		view: "form", id: "roleform",
 		autowidth: true,
@@ -31,12 +30,13 @@
 						this.getTopParentView().hide();
 					}
 					webix.ajax().post("/role", data).then(() => webix.message("Saved."));
-					$$("rolelist").add({ id: data.id, name: data.name });
+					$$("rolelist").add({ id: data.id, value: data.name });
+					$$("rolelist").refresh();
 					this.getTopParentView().hide();
 				}
 			},
 			{
-				view: "button", value: "Save", click: function () {
+				view: "button", value: "Update", click: function () {
 					var data = this.getFormView().getValues();
 					console.log(data);
 					webix.ajax().post("/role", data).then(() => webix.message("Saved."));
