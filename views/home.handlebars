@@ -1,0 +1,109 @@
+<h2>Users</h2>
+<div id='grid-container' style='width:70%; height:70%;'></div>
+<script>
+
+	webix.i18n.parseFormat = "%c";
+	webix.i18n.setLocale();
+	var list = {
+		view: "list", id: "rolelist",
+		autoheight: true, select: true,
+		template: "#name#",
+		on: {
+			onAfterSelect: function (id) {
+				$$("roleform").load("/role/" + id);
+			}
+		},
+		url: "/role"
+	};
+
+	var form = {
+		view: "form", id: "roleform",
+		autowidth: true,
+		autoheight: true,
+		rows: [
+			{ view: "text", name: "name", placeholder: "Role name" },
+			{
+				view: "button", value: "Add new", click: function () {
+					var data = this.getFormView().getValues();
+					data.id = webix.uid();
+					if (!data.name) {
+						webix.message('Enter valid string');
+						this.getTopParentView().hide();
+					}
+					webix.ajax().post("/role", data).then(() => webix.message("Saved."));
+					$$("rolelist").add({ id: data.id, name: data.name });
+					this.getTopParentView().hide();
+				}
+			},
+			{
+				view: "button", value: "Save", click: function () {
+					var data = this.getFormView().getValues();
+					console.log(data);
+					webix.ajax().post("/role", data).then(() => webix.message("Saved."));
+					$$("rolelist").updateItem(data.id, data);
+					this.getTopParentView().hide();
+				}
+			},
+			{
+				view: "button", value: "Cancel", click: function () {
+					this.getTopParentView().hide();
+				}
+			},
+
+		]
+	};
+	var toolbar = {
+		view: "toolbar",
+		cols: [
+			{
+				view: "button", value: "Add User", width: 120, click: function () {
+					$$("grid").add({})
+				}
+			},
+			{
+				view: "button", value: "Delete User", width: 120, click: function () {
+					var rows = $$("grid").getSelectedId(true);
+					if (rows.length)
+						$$("grid").remove(rows);
+				}
+			},
+			{
+				view: "button", value: "Add new role", width: 120, click: function () {
+					$$("editwin").show();
+				}
+			},
+		]
+	};
+	webix.ui({
+		view: "popup",
+		id: "editwin",
+		head: "Role",
+		modal: true,
+		position: "center",
+		body:
+		{
+			cols: [list, form]
+		}
+	});
+	var grid = {
+		view: "datatable", id: "grid", select: true,
+		autoheight: true, scroll: true,
+		editable: true,
+		columns: [
+			{ id: "username", header: "User Name", editor: "text" },
+			{ id: "name", header: "Real Name", editor: "text" },
+			{ id: "email", header: "Email", width: 150, editor: "text" },
+			{ id: "role_id", header: "Role", options: "/role", width: 80, editor: "richselect" },
+			{ id: "birthday", header: "Birthday", map: "(date)", fillspace: 1, editor: "date" }
+		],
+		url: "/user",
+		save: "rest->/user"
+	};
+	webix.ui({
+		type: "space",
+		container: "grid-container",
+		rows: [
+			toolbar, grid
+		]
+	});
+</script>

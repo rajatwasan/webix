@@ -1,0 +1,26 @@
+{
+  "name": "webix",
+  "version": "1.0.0",
+  "description": "Webix NodeJS Task by WTO",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "webix",
+    "demo"
+  ],
+  "author": "Rajat Kumar",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "formidable": "^1.2.1",
+    "mongoskin": "^2.1.0",
+    "mysql2": "^1.7.0",
+    "sequelize": "^5.21.1",
+    "sqlite3": "^4.2.0"
+  }
+}
